@@ -7,6 +7,9 @@ import SystemStatusCard from '../components/shared/SystemStatusCard';
 import ActivityCard from '../components/shared/ActivityCard';
 import BlogCard from '../components/shared/BlogCard';
 import BlogDetail from '../components/shared/BlogDetail';
+import ExperienceCard from '../components/shared/ExperienceCard';
+import SkillsCard from '../components/shared/SkillsCard';
+
 
 import { resumeData } from '../data/resumeData';
 import { blogPosts } from '../data/blogPosts';
@@ -17,6 +20,8 @@ const Portfolio = () => {
     const [portfolioData, setPortfolioData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [selectedBlogId, setSelectedBlogId] = useState(null);
+    const [activeTab, setActiveTab] = useState('status');
+
 
     const selectedBlog = blogPosts.find(p => p.id === selectedBlogId);
 
@@ -202,31 +207,44 @@ const Portfolio = () => {
                     </div>
                 </div>
 
-                {/* Column 3: Status & Activity */}
+                {/* Column 3: Tabbed — Status / Experience / Skills */}
                 <div className="grid-column col-status">
 
+                    {/* Tab switcher card */}
+                    <div className="bento-card tab-card">
+                        <div className="tab-bar">
+                            {['status', 'exp', 'skills'].map(t => (
+                                <button
+                                    key={t}
+                                    className={`tab-btn ${activeTab === t ? 'active' : ''}`}
+                                    onClick={() => setActiveTab(t)}
+                                >
+                                    {t === 'status' ? 'Status' : t === 'exp' ? 'Experience' : 'Skills'}
+                                </button>
+                            ))}
+                        </div>
 
-                    <SystemStatusCard repoCount={portfolioData?.repositories?.totalCount || 0} />
+                        {activeTab === 'status' && (
+                            <div className="tab-panel">
+                                <SystemStatusCard repoCount={portfolioData?.repositories?.totalCount || 0} inline />
+                            </div>
+                        )}
+                        {activeTab === 'exp' && (
+                            <div className="tab-panel">
+                                <ExperienceCard experience={resumeData.experience} />
+                            </div>
+                        )}
+                        {activeTab === 'skills' && (
+                            <div className="tab-panel">
+                                <SkillsCard skills={resumeData.skills} />
+                            </div>
+                        )}
+                    </div>
+
                     <ActivityCard latestRepos={portfolioData?.repositories?.nodes?.slice(0, 3) || []} />
 
-                    <div className="bento-card">
-                        <h3 className="label-small" style={{ marginBottom: '8px' }}>Starred</h3>
-                        <div className="grid-column">
-
-                            {portfolioData?.repositories?.nodes?.filter(r => r.stargazerCount > 0).slice(0, 2).map((repo, i) => (
-                                <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                    <div style={{ width: '24px', height: '24px', background: repo.languages?.edges?.[0]?.node?.color || '#333', borderRadius: '2px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '10px', fontWeight: 800, color: '#fff' }}>
-                                        {repo.name.substring(0, 2).toUpperCase()}
-                                    </div>
-                                    <div>
-                                        <div style={{ fontSize: '11px', fontWeight: 600, color: '#fafafa' }}>{repo.name}</div>
-                                        <div className="text-small">{repo.stargazerCount} stars</div>
-                                    </div>
-                                </div>
-                            )) || <div className="text-small">No starred repos found.</div>}
-                        </div>
-                    </div>
                 </div>
+
 
                 {/* Column 4: Blog */}
                 <div className="col-blog">
