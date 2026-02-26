@@ -1,27 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Portfolio from './pages/Portfolio';
+import BlogPage from './pages/BlogPage';
 
 function App() {
-    const [path, setPath] = useState(window.location.pathname);
-
-    useEffect(() => {
-        const handleLocationChange = () => {
-            setPath(window.location.pathname);
-        };
-        window.addEventListener('popstate', handleLocationChange);
-        return () => window.removeEventListener('popstate', handleLocationChange);
-    }, []);
-
-    // Simple routing for the personal dashboard
-    const renderPage = () => {
-        return <Portfolio />;
-    };
-
     return (
-        <div className="app-container">
-            {renderPage()}
-        </div>
+        <BrowserRouter>
+            <div className="app-container">
+                <Routes>
+                    <Route path="/" element={<Portfolio />} />
+                    <Route path="/blog/:id" element={<BlogPage />} />
+                </Routes>
+            </div>
+        </BrowserRouter>
     );
 }
 
 export default App;
+

@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import BentoGrid from '../components/layout/BentoGrid';
 import ProfileCard from '../components/shared/ProfileCard';
 import GitHubCard from '../components/shared/GitHubCard';
@@ -19,11 +21,9 @@ const Portfolio = () => {
 
     const [portfolioData, setPortfolioData] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [selectedBlogId, setSelectedBlogId] = useState(null);
     const [activeTab, setActiveTab] = useState('status');
+    const navigate = useNavigate();
 
-
-    const selectedBlog = blogPosts.find(p => p.id === selectedBlogId);
 
 
     useEffect(() => {
@@ -146,10 +146,6 @@ const Portfolio = () => {
     const totalStars = portfolioData?.repositories?.nodes?.reduce((acc, repo) => acc + repo.stargazerCount, 0) || 0;
 
 
-    if (selectedBlog) {
-        return <BlogDetail blog={selectedBlog} onBack={() => setSelectedBlogId(null)} />;
-    }
-
     return (
         <div className="portfolio-page">
             <BentoGrid>
@@ -248,8 +244,9 @@ const Portfolio = () => {
 
                 {/* Column 4: Blog */}
                 <div className="col-blog">
-                    <BlogCard onBlogClick={(id) => setSelectedBlogId(id)} />
+                    <BlogCard onBlogClick={(id) => navigate(`/blog/${id}`)} />
                 </div>
+
             </BentoGrid>
 
         </div>
