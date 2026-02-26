@@ -1,25 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import ReactMarkdown from 'react-markdown';
 
 const BlogDetail = ({ blog, onBack }) => {
-    const [content, setContent] = useState('');
-    const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        if (blog?.markdownFile) {
-            fetch(blog.markdownFile)
-                .then(res => res.text())
-                .then(text => {
-                    setContent(text);
-                    setLoading(false);
-                })
-                .catch(err => {
-                    console.error("Failed to load blog content:", err);
-                    setLoading(false);
-                });
-        }
-    }, [blog]);
-
     if (!blog) return null;
 
     return (
@@ -29,9 +11,11 @@ const BlogDetail = ({ blog, onBack }) => {
                     <span>←</span> Back to Portfolio
                 </button>
 
-                <div className="blog-hero">
-                    <img src={blog.heroImage} alt={blog.title} />
-                </div>
+                {blog.heroImage && (
+                    <div className="blog-hero">
+                        <img src={blog.heroImage} alt={blog.title} />
+                    </div>
+                )}
 
                 <div className="blog-meta">
                     <span className="blog-date">{blog.date}</span>
@@ -40,10 +24,10 @@ const BlogDetail = ({ blog, onBack }) => {
                 </div>
 
                 <div className="markdown-body">
-                    {loading ? (
-                        <div className="loading-text">Deciphering content...</div>
+                    {blog.content ? (
+                        <ReactMarkdown>{blog.content}</ReactMarkdown>
                     ) : (
-                        <ReactMarkdown>{content}</ReactMarkdown>
+                        <p style={{ color: 'var(--text-secondary)' }}>No content available for this post.</p>
                     )}
                 </div>
             </div>
@@ -52,3 +36,4 @@ const BlogDetail = ({ blog, onBack }) => {
 };
 
 export default BlogDetail;
+
