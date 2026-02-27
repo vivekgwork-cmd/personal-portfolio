@@ -21,8 +21,8 @@ jobs:
 
       - name: Verify Blog Data Token
         run: |
-          if [ -z "${{ secrets.BLOG_DATA_TOKEN }}" ]; then
-            echo "::error::BLOG_DATA_TOKEN is not set. Please add it to your repository secrets."
+          if [ -z "${{ secrets.BLOG_TOKEN }}" ]; then
+            echo "::error::BLOG_TOKEN is not set. Please add it to your repository secrets."
             exit 1
           fi
 
@@ -31,7 +31,7 @@ jobs:
         with:
           repository: vivekgwork-cmd/blog-data
           path: source
-          token: ${{ secrets.BLOG_DATA_TOKEN }}
+          token: ${{ secrets.BLOG_TOKEN }}
 
       - name: Check for today's blog
         id: check_file
