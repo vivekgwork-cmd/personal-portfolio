@@ -19,6 +19,13 @@ jobs:
         run: |
           echo "TODAY=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
 
+      - name: Verify Blog Data Token
+        run: |
+          if [ -z "${{ secrets.BLOG_DATA_TOKEN }}" ]; then
+            echo "::error::BLOG_DATA_TOKEN is not set. Please add it to your repository secrets."
+            exit 1
+          fi
+
       - name: Checkout Blog Data Repo
         uses: actions/checkout@v4
         with:
