@@ -287,38 +287,6 @@ h3 {
     color: var(--text-primary);
 }
 
-.social-btn:hover {
-    color: var(--text-primary);
-}
-
-.social-bar-centered {
-    display: flex;
-    justify-content: center;
-    gap: 24px;
-    margin-bottom: 24px;
-    padding: 8px 20px;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid var(--card-border);
-    border-radius: 20px;
-    width: fit-content;
-    margin-left: auto;
-    margin-right: auto;
-    backdrop-filter: blur(8px);
-}
-
-.social-bar-centered a {
-    color: var(--text-secondary);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    display: flex;
-    align-items: center;
-}
-
-.social-bar-centered a:hover {
-    color: var(--accent-green);
-    transform: translateY(-2px);
-    filter: drop-shadow(0 0 8px rgba(63, 185, 80, 0.5));
-}
-
 .tab-btn.active {
     background: rgba(63, 185, 80, 0.12);
     color: var(--accent-green);
