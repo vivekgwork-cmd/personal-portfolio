@@ -74,6 +74,13 @@ a:hover {
 }
 
 @media (max-width: 1150px) {
+    body {
+        height: auto;
+        overflow: auto;
+        justify-content: flex-start;
+        padding: 40px 0;
+    }
+
     .bento-grid {
         grid-template-columns: repeat(2, 1fr);
         max-width: 600px;
@@ -401,8 +408,9 @@ h3 {
 
 @media (max-width: 650px) {
     .blog-list {
-        height: 400px;
-        /* Shorter on mobile to avoid endless page */
+        height: auto;
+        /* Let it expand on mobile */
+        max-height: 500px;
     }
 }
 
