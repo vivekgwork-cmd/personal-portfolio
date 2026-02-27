@@ -1,11 +1,7 @@
 name: Sync Daily Blog
 
 on:
-  schedule:
-    - cron: "30 3 * * *"   # 9 AM IST (Internal GitHub Cron - approximate)
-  repository_dispatch:     # External Trigger for EXACT timing
-    types: [manual-sync]
-  workflow_dispatch:       # Manual Trigger in UI
+  workflow_dispatch:      # Allow manual trigger in the UI only
 
 jobs:
   sync:
