@@ -2,7 +2,8 @@ name: Sync Daily Blog
 
 on:
   schedule:
-    - cron: "*/2 * * * *"    # 9 AM IST   
+    - cron: "*/2 * * * *"   # Run every 2 minutes for testing
+  workflow_dispatch:      # Allow manual trigger
 
 jobs:
   sync:
