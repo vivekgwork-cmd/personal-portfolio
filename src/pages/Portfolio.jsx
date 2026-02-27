@@ -11,16 +11,18 @@ import BlogCard from '../components/shared/BlogCard';
 import BlogDetail from '../components/shared/BlogDetail';
 import ExperienceCard from '../components/shared/ExperienceCard';
 import SkillsCard from '../components/shared/SkillsCard';
+import { getAllBlogs } from '../utils/blogLoader';
 
 
 import { resumeData } from '../data/resumeData';
-import { blogPosts } from '../data/blogPosts';
+// Removed hardcoded blogPosts import
 
 
 const Portfolio = () => {
 
     const [portfolioData, setPortfolioData] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [blogs, setBlogs] = useState([]);
     const [activeTab, setActiveTab] = useState('status');
     const navigate = useNavigate();
 
@@ -108,6 +110,9 @@ const Portfolio = () => {
                 console.error("Failed to fetch Github data:", err);
                 setLoading(false);
             });
+
+        // Initialize blogs
+        setBlogs(getAllBlogs());
     }, []);
 
     if (loading) {
@@ -250,7 +255,7 @@ const Portfolio = () => {
 
                 {/* Column 4: Blog */}
                 <div className="col-blog">
-                    <BlogCard onBlogClick={(id) => navigate(`/blog/${id}`)} />
+                    <BlogCard blogs={blogs} onBlogClick={(id) => navigate(`/blog/${id}`)} />
                 </div>
 
             </BentoGrid>

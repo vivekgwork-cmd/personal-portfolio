@@ -1,13 +1,12 @@
 import React from 'react';
-import { blogPosts } from '../../data/blogPosts';
 
-const BlogCard = ({ onBlogClick }) => {
+const BlogCard = ({ onBlogClick, blogs = [] }) => {
     return (
         <div className="bento-card">
             <h3 className="label-small" style={{ marginBottom: '12px' }}>Blog</h3>
 
             <div className="blog-list">
-                {blogPosts.map((post) => (
+                {blogs.map((post) => (
                     <div
                         key={post.id}
                         className="blog-item"
@@ -23,6 +22,5 @@ const BlogCard = ({ onBlogClick }) => {
         </div>
     );
 };
-
 
 export default BlogCard;

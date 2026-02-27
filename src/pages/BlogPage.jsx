@@ -1,12 +1,17 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
-import { blogPosts } from '../data/blogPosts';
+import { getBlogById } from '../utils/blogLoader';
 
 const BlogPage = () => {
     const { id } = useParams();
     const navigate = useNavigate();
-    const blog = blogPosts.find(p => p.id === id);
+    const [blog, setBlog] = useState(null);
+
+    useEffect(() => {
+        const data = getBlogById(id);
+        setBlog(data);
+    }, [id]);
 
     if (!blog) {
         return (
