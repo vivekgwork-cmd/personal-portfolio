@@ -19,7 +19,7 @@ const ProfileCard = ({ name, role, githubData }) => {
     }, [index, bioText]);
 
     return (
-        <div className="bento-card" style={{ alignItems: 'center', textAlign: 'center' }}>
+        <div className="bento-card" style={{ alignItems: 'center', textAlign: 'center', position: 'relative' }}>
             <img src={avatarUrl} alt="Avatar" className="avatar" />
             <h1 style={{ fontSize: '20px', marginBottom: '4px' }}>{name}</h1>
             <p className="text-small" style={{
