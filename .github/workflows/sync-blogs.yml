@@ -19,15 +19,18 @@ jobs:
         run: |
           echo "TODAY=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
 
-      - name: Clone blog-data repo
-        run: |
-          git clone https://github.com/vivekgwork-cmd/blog-data.git source
+      - name: Checkout Blog Data Repo
+        uses: actions/checkout@v4
+        with:
+          repository: vivekgwork-cmd/blog-data
+          path: source
+          token: ${{ secrets.BLOG_DATA_TOKEN }}
 
       - name: Check for today's blog
         id: check_file
         run: |
-          # Look for any .md file starting with today's date
-          FILE=$(ls source/*.md | grep -E "${{ env.TODAY }}-" | head -n 1) || true
+          # Look for any .md file starting with today's date in root or content/
+          FILE=$(find source -maxdepth 2 -name "${{ env.TODAY }}-*.md" | head -n 1) || true
           if [ -n "$FILE" ]; then
             echo "found=true" >> $GITHUB_OUTPUT
             echo "file_path=$FILE" >> $GITHUB_OUTPUT
