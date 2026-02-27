@@ -26,12 +26,10 @@ jobs:
             exit 1
           fi
 
-      - name: Checkout Blog Data Repo
-        uses: actions/checkout@v4
-        with:
-          repository: vivekgwork-cmd/blog-data
-          path: source
-          token: ${{ secrets.BLOG_TOKEN }}
+      - name: Clone Blog Data Repo
+        run: |
+          # Use manual clone with token for better reliability on private repos
+          git clone https://x-access-token:${{ secrets.BLOG_TOKEN }}@github.com/vivekgwork-cmd/blog-data.git source
 
       - name: Check for today's blog
         id: check_file
