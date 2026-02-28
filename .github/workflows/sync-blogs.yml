@@ -1,7 +1,12 @@
-name: Sync Daily Blog
+name: Sync Blog Queue
 
 on:
-  workflow_dispatch:      # Allow manual trigger in the UI only
+  workflow_dispatch:
+    inputs:
+      sync_count:
+        description: 'How many blogs to deploy? (number or "all")'
+        required: true
+        default: '1'
 
 jobs:
   sync:
@@ -13,10 +18,6 @@ jobs:
       - name: Checkout Portfolio Repo
         uses: actions/checkout@v4
 
-      - name: Get Current Date
-        run: |
-          echo "TODAY=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
-
       - name: Verify Blog Data Token
         run: |
           if [ -z "${{ secrets.BLOG_TOKEN }}" ]; then
@@ -26,32 +27,63 @@ jobs:
 
       - name: Clone Blog Data Repo
         run: |
-          # Use manual clone with token for better reliability on private repos
           git clone https://x-access-token:${{ secrets.BLOG_TOKEN }}@github.com/vivekgwork-cmd/blog-data.git source
 
-      - name: Check for today's blog
-        id: check_file
-        run: |
-          # Look for any .md file starting with today's date in root or content/
-          FILE=$(find source -maxdepth 2 -name "${{ env.TODAY }}-*.md" | head -n 1) || true
-          if [ -n "$FILE" ]; then
-            echo "found=true" >> $GITHUB_OUTPUT
-            echo "file_path=$FILE" >> $GITHUB_OUTPUT
-          else
-            echo "found=false" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Copy & Sync
-        if: steps.check_file.outputs.found == 'true'
+      - name: Process Queue
+        id: process_queue
         run: |
           mkdir -p src/blog-content
-          cp "${{ steps.check_file.outputs.file_path }}" src/blog-content/
           
+          # 1. Get list of source files (sorted by name to preserve YYYY-MM-DD order)
+          # We look in root and content/ of the source repo
+          SOURCE_FILES=$(find source -maxdepth 2 -name "*.md" | sort)
+          
+          # 2. Identify already synced blogs (by checking the filename without date prefix)
+          SYNCED_BLOGS=$(ls src/blog-content/ | sed 's/\.md$//')
+          
+          # 3. Find unpublished blogs
+          UNPUBLISHED=()
+          for f in $SOURCE_FILES; do
+            BASENAME=$(basename "$f")
+            # Strip date prefix e.g. 2026-02-27-post.md -> post.md
+            CLEAN_NAME=$(echo "$BASENAME" | sed -E 's/^[0-9]{4}-[0-9]{2}-[0-9]{2}-//')
+            SLUG=$(echo "$CLEAN_NAME" | sed 's/\.md$//')
+            
+            if ! echo "$SYNCED_BLOGS" | grep -qxw "$SLUG"; then
+              UNPUBLISHED+=("$f")
+            fi
+          done
+          
+          # 4. Determine how many to sync
+          COUNT="${{ github.event.inputs.sync_count }}"
+          if [ "$COUNT" == "all" ]; then
+            TO_SYNC=${#UNPUBLISHED[@]}
+          else
+            TO_SYNC=$COUNT
+          fi
+          
+          # 5. Copy and Rename
+          DEPLOYED_LIST=""
+          i=0
+          for f in "${UNPUBLISHED[@]}"; do
+            if [ $i -ge $TO_SYNC ]; then break; i=$((i+1)); fi
+            
+            BASENAME=$(basename "$f")
+            CLEAN_NAME=$(echo "$BASENAME" | sed -E 's/^[0-9]{4}-[0-9]{2}-[0-9]{2}-//')
+            
+            cp "$f" "src/blog-content/$CLEAN_NAME"
+            DEPLOYED_LIST="$DEPLOYED_LIST $CLEAN_NAME"
+            i=$((i+1))
+          done
+          
+          echo "deployed_count=$i" >> $GITHUB_OUTPUT
+          echo "deployed_list=$DEPLOYED_LIST" >> $GITHUB_OUTPUT
+
       - name: Commit & Push
-        if: steps.check_file.outputs.found == 'true'
+        if: steps.process_queue.outputs.deployed_count > 0
         run: |
           git config --global user.name "sync-bot"
           git config --global user.email "actions@github.com"
           git add src/blog-content
-          # Only commit if there are actual changes
-          git diff --staged --quiet || (git commit -m "Auto-sync blog: ${{ env.TODAY }}" && git push)
+          git commit -m "Auto-deploy blogs: ${{ steps.process_queue.outputs.deployed_list }}"
+          git push
