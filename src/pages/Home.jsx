@@ -57,29 +57,43 @@ const HeroSection = () => (
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
                 >
-                    <div className="hero-name">Vivek G.</div>
+                    <div className="hero-status">
+                        <span className="status-dot" /> Available for consulting
+                    </div>
+                    <div className="hero-greet">Hey, I'm</div>
+                    <h1 className="hero-name">Vivek G.</h1>
                     <div className="hero-role">
                         <RoleCycler />
                     </div>
                     <p className="hero-bio">
-                        Full Stack Developer and Technical Program Manager with 4 years
-                        shipping production software and leading cross-functional teams.
-                        I build systems that scale and programs that deliver.
+                        I build production software and lead the programs that deliver
+                        it. Four years across engineering and program management —
+                        MERN, DevOps, and cross-functional teams of up to 10.
                     </p>
                     <div className="hero-actions">
                         <a href="#book" className="btn-primary">Book a Call</a>
-                        <Link to="/photography" className="btn-ghost">Photography →</Link>
+                        <a href="#work" className="btn-ghost">View Work →</a>
                     </div>
                 </motion.div>
 
-                <motion.img
-                    src="/bg-removed-personal-pic.png"
-                    alt="Vivek G"
-                    className="hero-photo"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 1, delay: 0.3 }}
-                />
+                <motion.div
+                    className="hero-portrait"
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.9, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
+                >
+                    <img
+                        src="/bg_for_personalpic.jpeg"
+                        alt=""
+                        className="hero-portrait-bg"
+                        aria-hidden="true"
+                    />
+                    <img
+                        src="/bg-removed-personal-pic.png"
+                        alt="Vivek G"
+                        className="hero-portrait-fg"
+                    />
+                </motion.div>
             </div>
         </div>
         <div className="hero-scroll">
