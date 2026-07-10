@@ -1,14 +1,18 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Portfolio from './pages/Portfolio';
+import Navbar from './components/layout/Navbar';
+import Home from './pages/Home';
+import Photography from './pages/Photography';
 import BlogPage from './pages/BlogPage';
 
 function App() {
     return (
         <BrowserRouter>
-            <div className="app-container">
+            <Navbar />
+            <div id="root-inner">
                 <Routes>
-                    <Route path="/" element={<Portfolio />} />
+                    <Route path="/" element={<Home />} />
+                    <Route path="/photography" element={<Photography />} />
                     <Route path="/blog/:id" element={<BlogPage />} />
                 </Routes>
             </div>
@@ -17,4 +21,3 @@ function App() {
 }
 
 export default App;
-
