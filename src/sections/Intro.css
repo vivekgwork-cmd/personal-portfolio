@@ -1,0 +1,55 @@
+.intro {
+  background: var(--not-quite-white);
+  color: var(--not-quite-black);
+}
+.intro__grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  max-width: 1400px;
+}
+.intro__grid .display-lg {
+  color: var(--not-quite-black);
+}
+.intro__soft {
+  color: rgba(26, 26, 26, 0.5);
+}
+
+/* The wrapper itself carries the display font-size (via .display .display-lg
+   classes on the element in JSX), so `em` units below correctly refer to the
+   ~48–112px display size rather than the 16px body size. */
+.intro__shuffle-wrap {
+  position: relative;
+  overflow: hidden;
+  height: 1em;
+  line-height: 1;
+  color: var(--dg-red);
+}
+.intro__shuffle {
+  display: flex;
+  flex-direction: column;
+  animation: word-shuffle 9s cubic-bezier(0.77, 0, 0.175, 1) infinite;
+}
+.intro__word {
+  display: block;
+  height: 1em;
+  line-height: 1;
+  white-space: nowrap;
+  color: var(--dg-red);
+}
+@keyframes word-shuffle {
+  0%, 18%  { transform: translateY(0); }
+  25%, 43% { transform: translateY(-1em); }
+  50%, 68% { transform: translateY(-2em); }
+  75%, 93% { transform: translateY(-3em); }
+  100%     { transform: translateY(-4em); }
+}
+
+/* Mobile: shrink the display font so long words like "program manager."
+   still fit on one line inside the container. */
+@media (max-width: 640px) {
+  .intro__grid .display-lg {
+    font-size: clamp(1.75rem, 8vw, 2.75rem);
+    letter-spacing: -0.02em;
+  }
+}

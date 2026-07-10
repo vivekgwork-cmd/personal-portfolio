@@ -1,0 +1,105 @@
+.work {
+  background: var(--pure-black);
+  color: var(--not-quite-white);
+}
+.work__header {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding-bottom: clamp(3rem, 6vw, 5rem);
+}
+.work__heading {
+  color: var(--not-quite-white);
+}
+.work__list {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--divider);
+}
+.work__item {
+  display: block;
+  color: var(--not-quite-white);
+  padding: clamp(2rem, 4vw, 3rem) 0;
+  position: relative;
+  transition: color 0.4s ease;
+}
+.work__row {
+  display: grid;
+  grid-template-columns: 60px 1fr 60px;
+  gap: clamp(1rem, 3vw, 3rem);
+  align-items: start;
+}
+.work__num {
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  letter-spacing: 0.14em;
+  color: var(--muted);
+  margin-top: 0.6rem;
+}
+.work__title-wrap {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.work__title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(2rem, 5.5vw, 4.5rem);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+}
+.work__year {
+  font-size: 0.78rem;
+  letter-spacing: 0.14em;
+  color: var(--muted);
+}
+.work__cat {
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  letter-spacing: 0.06em;
+  color: rgba(250, 250, 250, 0.6);
+  text-transform: uppercase;
+}
+.work__desc {
+  margin-top: 1.25rem;
+  max-width: 42ch;
+  color: rgba(250, 250, 250, 0.72);
+  font-size: 1rem;
+  line-height: 1.55;
+}
+.work__arrow {
+  font-size: 1.6rem;
+  align-self: center;
+  color: rgba(250, 250, 250, 0.55);
+  transition: transform 0.4s ease, color 0.4s ease;
+}
+.work__underline {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: var(--divider);
+  transform-origin: left;
+  transition: transform 0.6s cubic-bezier(0.77, 0, 0.175, 1), background 0.4s ease;
+}
+.work__item:hover .work__arrow {
+  transform: translate(6px, -6px);
+  color: var(--dg-red);
+}
+.work__item:hover .work__title {
+  color: var(--dg-red);
+}
+.work__item:hover .work__underline {
+  background: var(--dg-red);
+}
+@media (max-width: 720px) {
+  .work__row { grid-template-columns: 32px 1fr 24px; gap: 1rem; }
+  .work__title { font-size: clamp(1.75rem, 8vw, 3rem); }
+  .work__num { font-size: 0.7rem; margin-top: 0.35rem; }
+  .work__year { font-size: 0.7rem; }
+  .work__desc { font-size: 0.92rem; margin-top: 0.9rem; }
+  .work__arrow { font-size: 1.2rem; }
+}

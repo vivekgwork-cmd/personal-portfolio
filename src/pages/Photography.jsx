@@ -1,144 +1,98 @@
-import React, { useState, useCallback } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { allPhotos } from '../data/photos';
+import { photos, categories } from '../data/photos.js';
+import Lightbox from '../components/Lightbox.jsx';
+import Footer from '../sections/Footer.jsx';
+import './Photography.css';
 
-const Lightbox = ({ photos, index, onClose, onPrev, onNext }) => {
-    const handleKey = useCallback((e) => {
-        if (e.key === 'Escape') onClose();
-        if (e.key === 'ArrowLeft') onPrev();
-        if (e.key === 'ArrowRight') onNext();
-    }, [onClose, onPrev, onNext]);
+const ease = [0.77, 0, 0.175, 1];
 
-    React.useEffect(() => {
-        window.addEventListener('keydown', handleKey);
-        document.body.style.overflow = 'hidden';
-        return () => {
-            window.removeEventListener('keydown', handleKey);
-            document.body.style.overflow = '';
-        };
-    }, [handleKey]);
+export default function Photography() {
+  const [active, setActive] = useState('all');
+  const [lightboxIndex, setLightboxIndex] = useState(null);
 
-    return (
-        <motion.div
-            className="lightbox-overlay"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.25 }}
-            onClick={onClose}
-        >
-            <button className="lightbox-close" onClick={onClose} aria-label="Close">✕</button>
+  const filtered = useMemo(() => {
+    if (active === 'all') return photos;
+    return photos.filter((p) => p.category === active);
+  }, [active]);
 
-            <button
-                className="lightbox-nav prev"
-                onClick={(e) => { e.stopPropagation(); onPrev(); }}
-                aria-label="Previous"
+  const counts = useMemo(() => {
+    const map = { all: photos.length };
+    for (const p of photos) map[p.category] = (map[p.category] || 0) + 1;
+    return map;
+  }, []);
+
+  useEffect(() => {
+    document.body.style.overflow = lightboxIndex !== null ? 'hidden' : '';
+    return () => { document.body.style.overflow = ''; };
+  }, [lightboxIndex]);
+
+  return (
+    <main className="photo-page">
+      <section className="photo-hero container">
+        <p className="eyebrow">Photography</p>
+        <h1 className="display display-lg photo-hero__title">
+          Seen, framed,<br />and kept.
+        </h1>
+        <p className="body-lg photo-hero__intro">
+          A living archive of moments from the streets of Bengaluru, quiet interiors,
+          and the occasional long exposure. Filter by category below.
+        </p>
+      </section>
+
+      <div className="photo-filter container">
+        <ul className="photo-filter__list">
+          {categories.map((c) => (
+            <li key={c.id}>
+              <button
+                className={`photo-filter__btn ${active === c.id ? 'is-active' : ''}`}
+                onClick={() => setActive(c.id)}
+              >
+                <span>{c.label}</span>
+                <sup>{counts[c.id] || 0}</sup>
+              </button>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <section className="photo-grid container">
+        <AnimatePresence mode="popLayout">
+          {filtered.map((p, i) => (
+            <motion.button
+              layout
+              key={p.file}
+              className="photo-grid__item"
+              onClick={() => setLightboxIndex(i)}
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.5, ease, delay: Math.min(i * 0.02, 0.3) }}
             >
-                ‹
-            </button>
+              <img src={p.src} alt="" loading="lazy" />
+              <span className="photo-grid__cat">{categoryLabel(p.category)}</span>
+            </motion.button>
+          ))}
+        </AnimatePresence>
+      </section>
 
-            <motion.img
-                key={photos[index].src}
-                src={photos[index].src}
-                className="lightbox-img"
-                initial={{ opacity: 0, scale: 0.93 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.93 }}
-                transition={{ duration: 0.28 }}
-                onClick={(e) => e.stopPropagation()}
-                decoding="async"
-                alt=""
-            />
+      <AnimatePresence>
+        {lightboxIndex !== null && (
+          <Lightbox
+            items={filtered}
+            index={lightboxIndex}
+            onClose={() => setLightboxIndex(null)}
+            onIndex={setLightboxIndex}
+          />
+        )}
+      </AnimatePresence>
 
-            <button
-                className="lightbox-nav next"
-                onClick={(e) => { e.stopPropagation(); onNext(); }}
-                aria-label="Next"
-            >
-                ›
-            </button>
+      <Footer />
+    </main>
+  );
+}
 
-            <div className="lightbox-counter">
-                {index + 1} / {photos.length}
-            </div>
-        </motion.div>
-    );
-};
-
-const Photography = () => {
-    const [lightboxIdx, setLightboxIdx] = useState(null);
-
-    const open = (i) => setLightboxIdx(i);
-    const close = () => setLightboxIdx(null);
-    const prev = () => setLightboxIdx(i => (i - 1 + allPhotos.length) % allPhotos.length);
-    const next = () => setLightboxIdx(i => (i + 1) % allPhotos.length);
-
-    return (
-        <>
-            <div className="photo-page">
-                <motion.div
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.65 }}
-                >
-                    <div className="section-label">Photography</div>
-                    <h1 className="section-title">
-                        Through the lens
-                    </h1>
-                    <p style={{
-                        marginTop: '16px', fontSize: '15px',
-                        color: 'var(--text-muted)', lineHeight: 1.72, maxWidth: '480px'
-                    }}>
-                        Documenting light, moments, and the world between frames.
-                        Shot across Bengaluru and beyond.
-                    </p>
-
-                    <div style={{ marginTop: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        <span style={{ fontSize: '13px', color: 'var(--text-muted)', fontWeight: 600 }}>
-                            {allPhotos.length} photographs
-                        </span>
-                        <span style={{ color: 'var(--text-dim)' }}>·</span>
-                        <span style={{ fontSize: '13px', color: 'var(--text-muted)' }}>
-                            Click to open
-                        </span>
-                    </div>
-                </motion.div>
-
-                <div className="photo-masonry">
-                    {allPhotos.map((photo, i) => (
-                        <motion.div
-                            key={photo.src}
-                            className="masonry-item"
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true, margin: '-20px' }}
-                            transition={{ duration: 0.5, delay: Math.min((i % 6) * 0.06, 0.35) }}
-                            onClick={() => open(i)}
-                        >
-                            <img
-                                src={photo.src}
-                                alt=""
-                                loading="lazy"
-                                decoding="async"
-                            />
-                        </motion.div>
-                    ))}
-                </div>
-            </div>
-
-            <AnimatePresence>
-                {lightboxIdx !== null && (
-                    <Lightbox
-                        photos={allPhotos}
-                        index={lightboxIdx}
-                        onClose={close}
-                        onPrev={prev}
-                        onNext={next}
-                    />
-                )}
-            </AnimatePresence>
-        </>
-    );
-};
-
-export default Photography;
+function categoryLabel(id) {
+  const c = categories.find((c) => c.id === id);
+  return c ? c.label : id;
+}
