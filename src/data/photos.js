@@ -95,11 +95,27 @@ export const categories = [
   { id: 'long-exposure', label: 'Long Exposure' },
 ];
 
-export const photos = raw.map(({ file, cat }) => ({
-  file,
-  category: cat,
-  src: '/' + encodeURIComponent(file),
-}));
+const thumbs = import.meta.glob('/photography-images/*.{jpg,jpeg,JPG,JPEG}', {
+  query: '?w=600&format=webp&quality=75',
+  import: 'default',
+  eager: true,
+});
+
+const fulls = import.meta.glob('/photography-images/*.{jpg,jpeg,JPG,JPEG}', {
+  query: '?w=1800&format=webp&quality=82',
+  import: 'default',
+  eager: true,
+});
+
+export const photos = raw.map(({ file, cat }) => {
+  const key = '/photography-images/' + file;
+  return {
+    file,
+    category: cat,
+    thumb: thumbs[key],
+    src: fulls[key],
+  };
+});
 
 // A hand-picked hero set for the home page (mix of categories, strongest images)
 const featuredFiles = [

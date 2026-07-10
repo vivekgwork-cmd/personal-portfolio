@@ -31,7 +31,7 @@ export default function PhotoTeaser() {
             viewport={{ once: true, margin: '-10%' }}
             transition={{ duration: 0.9, ease, delay: i * 0.06 }}
           >
-            <img src={p.src} alt="" loading="lazy" />
+            <img src={p.thumb} alt="" loading="lazy" decoding="async" />
           </motion.div>
         ))}
       </div>

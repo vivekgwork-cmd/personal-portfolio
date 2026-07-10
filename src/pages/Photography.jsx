@@ -69,7 +69,7 @@ export default function Photography() {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.5, ease, delay: Math.min(i * 0.02, 0.3) }}
             >
-              <img src={p.src} alt="" loading="lazy" />
+              <img src={p.thumb} alt="" loading="lazy" decoding="async" />
               <span className="photo-grid__cat">{categoryLabel(p.category)}</span>
             </motion.button>
           ))}

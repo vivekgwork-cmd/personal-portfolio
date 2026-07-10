@@ -38,7 +38,7 @@ export default function Lightbox({ items, index, onClose, onIndex }) {
         <span>←</span>
       </button>
       <div className="lb__frame">
-        <img src={item.src} alt="" />
+        <img src={item.src} alt="" decoding="async" fetchpriority="high" />
       </div>
       <button className="lb__nav lb__nav--next" onClick={next} aria-label="Next">
         <span>→</span>
