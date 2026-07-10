@@ -86,8 +86,8 @@ const Photography = () => {
                         Through the lens
                     </h1>
                     <p style={{
-                        marginTop: '18px', fontSize: '17px',
-                        color: 'var(--text-muted)', lineHeight: 1.7, maxWidth: '480px'
+                        marginTop: '16px', fontSize: '15px',
+                        color: 'var(--text-muted)', lineHeight: 1.72, maxWidth: '480px'
                     }}>
                         Documenting light, moments, and the world between frames.
                         Shot across Bengaluru and beyond.

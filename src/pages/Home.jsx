@@ -18,7 +18,12 @@ const Fade = ({ children, delay = 0 }) => (
 );
 
 // ─── Role Cycler ─────────────────────────────────────────────────────
-const roles = ['Full Stack Developer', 'DevOps Engineer', 'Solutions Specialist', 'Agency Builder'];
+const roles = [
+    'Full Stack Developer',
+    'Technical Program Manager',
+    'Solutions Specialist',
+    'Founder',
+];
 
 const RoleCycler = () => {
     const [idx, setIdx] = useState(0);
@@ -48,7 +53,6 @@ const HeroSection = () => (
         <div className="hero">
             <div className="hero-inner">
                 <motion.div
-                    className="hero-text"
                     initial={{ opacity: 0, y: 24 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
@@ -58,9 +62,9 @@ const HeroSection = () => (
                         <RoleCycler />
                     </div>
                     <p className="hero-bio">
-                        Full Stack Developer and Solutions Specialist with 3.8+ years
-                        shipping production software. I build scalable systems and lead
-                        teams that deliver.
+                        Full Stack Developer and Technical Program Manager with 4 years
+                        shipping production software and leading cross-functional teams.
+                        I build systems that scale and programs that deliver.
                     </p>
                     <div className="hero-actions">
                         <a href="#book" className="btn-primary">Book a Call</a>
@@ -73,8 +77,8 @@ const HeroSection = () => (
                     alt="Vivek G"
                     className="hero-photo"
                     initial={{ opacity: 0 }}
-                    animate={{ opacity: 0.9 }}
-                    transition={{ duration: 0.9, delay: 0.3 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 1, delay: 0.3 }}
                 />
             </div>
         </div>
@@ -96,22 +100,28 @@ const AboutSection = () => (
                 <div>
                     <p className="about-lead">
                         I build things that scale.<br />
-                        I manage teams that ship.<br />
-                        I run an agency that gets it done.
+                        I lead teams that ship.<br />
+                        I run programs that deliver.
                     </p>
                     <p className="about-body">
-                        3.8+ years of shipping production software — from re-architecting
-                        legacy systems and cutting document generation time by 95%, to
-                        containerizing full stacks and building CI/CD pipelines that hold
-                        in production.
+                        4 years of shipping production software — from re-architecting
+                        legacy systems with a 95% performance gain, to containerizing
+                        full stacks and managing CI/CD pipelines that hold in production.
                     </p>
                     <p className="about-body">
-                        As a Solutions Specialist at Weberon, I operate at the intersection
-                        of engineering and management — leading client engagements, scoping
-                        technical work, and driving delivery from brief to launch.
+                        As a Solutions Specialist & TPM at Weberon, I sit at the
+                        intersection of engineering and delivery management — owning
+                        3–5 concurrent programs, coordinating teams of up to 10, and
+                        driving execution from brief to launch with zero unplanned
+                        rollbacks.
                     </p>
                     <div className="tags">
-                        {['3.8+ yrs experience', 'Bengaluru, India', 'Open to collaboration', 'Tech & Management'].map(t => (
+                        {[
+                            '4 yrs experience',
+                            'Bengaluru, India',
+                            'Open to collaboration',
+                            'Engineering + Program Management',
+                        ].map(t => (
                             <span key={t} className="tag">{t}</span>
                         ))}
                     </div>
@@ -121,11 +131,11 @@ const AboutSection = () => (
             <Fade delay={0.16}>
                 <div className="skills-list">
                     {[
-                        { name: 'Frontend', items: 'React, Next.js, Redux, JavaScript' },
-                        { name: 'Backend', items: 'Node.js, Express, REST APIs, JWT' },
-                        { name: 'DevOps', items: 'Docker, Kubernetes, Jenkins, AWS' },
-                        { name: 'Monitoring', items: 'Prometheus, Grafana, Nagios' },
-                        { name: 'Management', items: 'Team leadership, client delivery, project scoping, agency ops' },
+                        { name: 'Engineering', items: 'React, Next.js, Node.js, TypeScript, MongoDB, Redux' },
+                        { name: 'DevOps', items: 'Docker, Kubernetes, Jenkins, AWS, GCP, CI/CD' },
+                        { name: 'Program Mgmt', items: 'Agile / Scrum, Sprint Planning, Risk Management, Roadmapping' },
+                        { name: 'Tools', items: 'Jira, OpenProject, Notion, Confluence, Cursor AI, Copilot' },
+                        { name: 'Leadership', items: 'Cross-functional teams, stakeholder communication, release governance' },
                     ].map(s => (
                         <div key={s.name} className="skill-row">
                             <span className="skill-name-label">{s.name}</span>
@@ -146,9 +156,11 @@ const ExperienceSection = () => (
         </Fade>
         <div className="exp-list">
             {resumeData.experience.map((exp, i) => (
-                <Fade key={exp.company} delay={i * 0.1}>
+                <Fade key={exp.company + exp.role} delay={i * 0.08}>
                     <div className="exp-item">
-                        <div className="exp-period">{exp.period}<br />{exp.location}</div>
+                        <div className="exp-period">
+                            {exp.period}<br />{exp.location}
+                        </div>
                         <div>
                             <div className="exp-role">{exp.role}</div>
                             <div className="exp-company">{exp.company}</div>
@@ -165,37 +177,41 @@ const ExperienceSection = () => (
     </section>
 );
 
-// ─── Work / Projects ──────────────────────────────────────────────────
+// ─── Projects ─────────────────────────────────────────────────────────
 const projects = [
     {
-        name: 'PDF Generation Engine',
-        desc: 'Re-architected a legacy document platform using pdfme. Cut generation time by 95% and reduced server load significantly.',
-        tech: 'TypeScript · pdfme · Node.js',
+        featured: true,
+        name: 'Prformnce',
+        badge: 'Latest · Live',
+        desc: 'Lead-intelligence SaaS built around Smart Form Endpoints, a QR Campaign Generator, and Engagement Analytics — helping SMBs and event organizers capture and understand leads in one workflow. Own the product roadmap, infrastructure, and go-to-market positioning end to end.',
+        tech: 'React · Node.js · MongoDB · QR Generation · Analytics',
+        href: 'https://www.wbzard.com/prformnce/',
+        linkLabel: 'wbzard.com/prformnce →',
     },
     {
-        name: 'FormFreedom CRM',
-        desc: 'Full-stack CRM for lead tracking and automated follow-ups, with a Jenkins CI/CD pipeline and containerized deployment.',
-        tech: 'React · Node.js · MongoDB · Docker',
+        name: 'Document Automation Platform',
+        desc: 'Re-architected a legacy marketing automation platform integrating pdfme for dynamic, print-ready PDF generation. Cut bulk generation from 2.5 hours to under 30 seconds — 95% reduction.',
+        tech: 'TypeScript · pdfme · Node.js · WYSIWYG',
     },
     {
-        name: 'Next.js JAMstack Migration',
-        desc: 'Migrated three production websites from legacy CMS to Next.js. 3x performance improvement, Lighthouse score 100.',
-        tech: 'Next.js · Jenkins · AWS EC2',
+        name: 'JAMstack Modernization',
+        desc: 'Migrated legacy HTML/CSS/JS properties to Next.js SSG architecture with a centralized Jenkins CI/CD pipeline capable of building and deploying 10–15 websites in a single execution.',
+        tech: 'Next.js · Jenkins · Docker · Certbot · AWS',
+    },
+    {
+        name: 'Blokz.store — E-Commerce Platform',
+        desc: 'MERN stack e-commerce platform built with AI-assisted development, achieving a 70% reduction in development hours. Razorpay integration, Redux state management, Cloudinary media delivery.',
+        tech: 'React · Node.js · MongoDB · Redux · Razorpay',
     },
     {
         name: 'K8s Observability Stack',
-        desc: 'Prometheus + Grafana + Alertmanager deployed on Kubernetes. Full observability for production microservices.',
-        tech: 'Kubernetes · Prometheus · Grafana · YAML',
+        desc: 'Prometheus + Grafana + Alertmanager deployed on Kubernetes for full observability across production microservices. Configured Nagios for disk, HTTP, and SSL expiry monitoring.',
+        tech: 'Kubernetes · Prometheus · Grafana · Nagios',
     },
     {
-        name: 'Jenkins CI/CD Templates',
-        desc: 'Reusable pipeline templates for multi-stage Docker builds, SonarQube analysis, and zero-downtime deployments.',
-        tech: 'Jenkins · Docker · SonarQube · Groovy',
-    },
-    {
-        name: 'Weberon Agency Platform',
-        desc: 'Internal operations platform for managing client projects, timelines, and deliverables end-to-end at Weberon Solutions.',
-        tech: 'React · Node.js · REST APIs',
+        name: 'Enterprise React UI System',
+        desc: 'Built a reusable React component library adopted across multiple enterprise project teams at Wipro, reducing duplicate development effort and improving cross-team consistency.',
+        tech: 'React · TypeScript · REST APIs · Agile',
     },
 ];
 
@@ -206,15 +222,28 @@ const WorkSection = () => (
             <h2 className="section-title">Selected Projects</h2>
         </Fade>
         <div className="projects-grid-wrap">
-            {projects.map((p, i) => (
-                <Fade key={p.name} delay={i * 0.05}>
-                    <div className="proj-card">
-                        <div className="proj-name">{p.name}</div>
-                        <div className="proj-desc">{p.desc}</div>
-                        <div className="proj-tech">{p.tech}</div>
-                    </div>
-                </Fade>
-            ))}
+            {projects.map((p, i) => {
+                const Tag = p.href ? 'a' : 'div';
+                const linkProps = p.href
+                    ? { href: p.href, target: '_blank', rel: 'noopener noreferrer' }
+                    : {};
+                return (
+                    <Fade key={p.name} delay={i * 0.05}>
+                        <Tag
+                            className={`proj-card${p.featured ? ' proj-featured' : ''}`}
+                            {...linkProps}
+                        >
+                            {p.badge && <span className="proj-badge">{p.badge}</span>}
+                            <div className="proj-name">{p.name}</div>
+                            <div className="proj-desc">{p.desc}</div>
+                            <div className="proj-tech">{p.tech}</div>
+                            {p.linkLabel && (
+                                <span className="proj-link-hint">{p.linkLabel}</span>
+                            )}
+                        </Tag>
+                    </Fade>
+                );
+            })}
         </div>
     </section>
 );
@@ -312,15 +341,16 @@ const BookSection = () => {
                 <Fade delay={0.1}>
                     <div>
                         <p className="book-intro">
-                            Got a project to scope, an architecture to review, or a team
-                            to build? Book an hour — I'll show up prepared.
+                            Need a technical second opinion, architecture review, or someone
+                            to scope and lead your next program? Book an hour — I'll show up
+                            prepared.
                         </p>
                         <div className="book-items">
                             {[
                                 'Technical consulting & architecture review',
-                                'DevOps setup & pipeline consulting',
-                                'Project scoping & team planning',
-                                'Agency & product strategy',
+                                'DevOps setup & CI/CD pipeline consulting',
+                                'Program scoping, risk assessment & team planning',
+                                'Product strategy & go-to-market for SaaS',
                             ].map(item => (
                                 <div key={item} className="book-item">
                                     <span className="book-item-dash">—</span>
@@ -342,18 +372,11 @@ const BookSection = () => {
                                 transition={{ duration: 0.4 }}
                             >
                                 <p>Email client opened. Send the email and I'll confirm within 24 hours.</p>
-                                <a
-                                    href="mailto:vivekg.work@gmail.com"
-                                    style={{ fontSize: '14px', color: 'var(--text)' }}
-                                >
+                                <a href="mailto:vivekg.work@gmail.com" style={{ fontSize: '14px', color: 'var(--text)' }}>
                                     vivekg.work@gmail.com
                                 </a>
                                 <br />
-                                <button
-                                    onClick={() => setSubmitted(false)}
-                                    className="btn-ghost"
-                                    style={{ marginTop: '24px' }}
-                                >
+                                <button onClick={() => setSubmitted(false)} className="btn-ghost" style={{ marginTop: '24px' }}>
                                     Book another slot
                                 </button>
                             </motion.div>
@@ -388,7 +411,7 @@ const BookSection = () => {
                                     <label className="form-label">What do you want to work on?</label>
                                     <input
                                         className="form-input" type="text" name="topic"
-                                        placeholder="e.g. architecture review, CI/CD setup, team planning..."
+                                        placeholder="e.g. architecture review, program scoping, CI/CD setup..."
                                         value={form.topic} onChange={set} required
                                     />
                                 </div>
@@ -404,10 +427,7 @@ const BookSection = () => {
                                     </div>
                                     <div className="form-group">
                                         <label className="form-label">Time (IST)</label>
-                                        <select
-                                            className="form-input" name="time"
-                                            value={form.time} onChange={set} required
-                                        >
+                                        <select className="form-input" name="time" value={form.time} onChange={set} required>
                                             <option value="">Pick a time</option>
                                             <option value="10:00 AM">10:00 AM</option>
                                             <option value="11:00 AM">11:00 AM</option>
@@ -430,11 +450,7 @@ const BookSection = () => {
                                     />
                                 </div>
 
-                                <button
-                                    type="submit"
-                                    className="btn-primary"
-                                    style={{ alignSelf: 'flex-start' }}
-                                >
+                                <button type="submit" className="btn-primary" style={{ alignSelf: 'flex-start' }}>
                                     Book My Slot →
                                 </button>
                             </motion.form>
@@ -455,9 +471,10 @@ const Footer = () => (
                 <p className="footer-sub">Building. Managing. Shipping.</p>
             </div>
             <div className="footer-links">
-                <a href="https://github.com/vivekgwork-cmd" target="_blank" rel="noopener noreferrer" className="footer-link">GitHub</a>
-                <a href="mailto:vivekg.work@gmail.com" className="footer-link">Email</a>
-                <a href="https://www.linkedin.com/in/vivekgwork" target="_blank" rel="noopener noreferrer" className="footer-link">LinkedIn</a>
+                <a href={resumeData.contact.linkedin} target="_blank" rel="noopener noreferrer" className="footer-link">LinkedIn</a>
+                <a href={resumeData.contact.github} target="_blank" rel="noopener noreferrer" className="footer-link">GitHub</a>
+                <a href={`mailto:${resumeData.contact.email}`} className="footer-link">Email</a>
+                <a href="tel:+919606619285" className="footer-link">+91 9606619285</a>
             </div>
         </div>
     </footer>
