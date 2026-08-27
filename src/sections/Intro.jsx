@@ -3,7 +3,7 @@ import './Intro.css';
 
 const ease = [0.77, 0, 0.175, 1];
 
-const shuffle = ['engineer.', 'program manager.', 'builder.', 'photographer.', 'engineer.'];
+const shuffle = ['digital marketer.', 'web developer.', 'performance marketer.', 'photographer.', 'digital marketer.'];
 
 export default function Intro() {
   return (
@@ -45,7 +45,7 @@ export default function Intro() {
             visible: { opacity: 1, y: 0, transition: { duration: 0.9, ease } },
           }}
         >
-          Shipping thoughtful digital
+          Driving performance marketing
         </motion.p>
         <motion.p
           className="display display-lg intro__soft"
@@ -54,7 +54,7 @@ export default function Intro() {
             visible: { opacity: 1, y: 0, transition: { duration: 0.9, ease } },
           }}
         >
-          products and capturing quiet
+          and web experiences, capturing quiet
         </motion.p>
         <motion.p
           className="display display-lg intro__soft"

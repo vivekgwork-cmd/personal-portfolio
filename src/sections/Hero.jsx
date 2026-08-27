@@ -32,7 +32,7 @@ export default function Hero() {
               animate={{ y: '0%' }}
               transition={{ duration: 1.1, ease, delay: 0.7 }}
             >
-              Programs,
+              Campaigns,
             </motion.span>
           </span>
           <span className="hero__line">

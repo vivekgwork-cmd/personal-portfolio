@@ -1,9 +1,9 @@
 export const resumeData = {
   name: 'Vivek G',
-  role: 'Technical Program Manager',
+  role: 'Digital Marketer & Web Developer',
   based: 'Bengaluru, India',
   intro:
-    'A technical program manager, engineer, and photographer dedicated to shipping thoughtful digital products and capturing the small, quiet corners of everyday life.',
+    'A digital marketer and web developer with a working knowledge of performance marketing, social media management, and modern front-end development — dedicated to building thoughtful digital experiences and capturing the small, quiet corners of everyday life.',
   contact: {
     location: 'Bengaluru, India',
     phone: '+91 9606619285',
@@ -13,7 +13,7 @@ export const resumeData = {
   },
   experience: [
     {
-      role: 'Solutions Specialist & Technical Program Manager',
+      role: 'Solutions Specialist',
       company: 'Weberon Solutions',
       period: 'Oct 2023 — Present',
     },

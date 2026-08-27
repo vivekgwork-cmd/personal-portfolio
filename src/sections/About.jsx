@@ -29,8 +29,9 @@ export default function About() {
             viewport={{ once: true, margin: '-10%' }}
             transition={{ duration: 0.9, ease, delay: 0.1 }}
           >
-            {resumeData.intro} Currently owning end-to-end delivery for digital
-            transformation programs at Weberon Solutions in Bengaluru, India.
+            {resumeData.intro} Currently working as a Solutions Specialist at
+            Weberon Solutions in Bengaluru, India, blending digital marketing
+            strategy with hands-on web development.
           </motion.p>
 
           <div className="about__timeline">
